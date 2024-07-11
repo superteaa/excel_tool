@@ -159,7 +159,7 @@ def process_cycle(check_cycle, sheet_data, step_index, standard_sapacity):
             if charge_capacity is None:
                 return (check_cycle, final_cv, 0) # 如果没有找到Charge_Capacity，直接返回
 
-            soh = charge_capacity / standard_sapacity
+            soh = charge_capacity / standard_sapacity * 100
 
             return (check_cycle, final_cv, soh)
         else:
@@ -183,7 +183,7 @@ def process_cycle(check_cycle, sheet_data, step_index, standard_sapacity):
             if charge_capacity is None:
                 return (check_cycle, final_cv, 0) # 如果没有找到Charge_Capacity，直接返回
 
-            soh = charge_capacity / standard_sapacity
+            soh = charge_capacity / standard_sapacity * 100
 
             return (check_cycle, final_cv, soh)
         return
@@ -223,10 +223,11 @@ def main(work_name, step_index, output_name, standard_sapacity):
         for result in results:
             if result:
                 check_cycle, final_cv, soh = result
-                input_sheet[f'A{write_row}'] = final_cv
-                input_sheet[f'B{write_row}'] = soh
-                input_sheet[f'C{write_row}'] = check_cycle
-                write_row = write_row + 1
+                if soh != 0:
+                    input_sheet[f'A{write_row}'] = final_cv
+                    input_sheet[f'B{write_row}'] = soh
+                    input_sheet[f'C{write_row}'] = check_cycle
+                    write_row = write_row + 1
 
 
     print("writing!\n")
